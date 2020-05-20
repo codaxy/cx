@@ -180,6 +180,26 @@ export class LookupField extends Field {
 
       return data.value == null;
    }
+
+   formatValue(context, instance) {
+      if (!this.multiple) return super.formatValue(context, instance);
+
+      let {records, values, options} = instance.data;
+      if (isArray(records))
+         return records.map(record => record[this.valueTextField] || record[this.valueIdField]).join(", ");
+
+      if (isArray(values)) {
+         if (isArray(options))
+            return values.map(id => {
+               let option = options.find(o => o[this.optionIdField] == id);
+               return option ? option[this.valueTextField] : id
+            }).filter(Boolean).join(", ");
+
+         return values.join(", ");
+      }
+
+      return null;
+   }
 }
 
 LookupField.prototype.baseClass = "lookupfield";
