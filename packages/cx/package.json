@@ -16,10 +16,7 @@
   "dependencies": {
     "intl-io": "^0.3.0",
     "route-parser": "^0.0.5"
-  },
-  "peerDependencies": {
-    "@types/react": "^16.0.5"
-  },
+  },  
   "repository": {
     "type": "git",
     "url": "git@github.com:codaxy/cxjs.git"

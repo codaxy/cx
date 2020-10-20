@@ -19,8 +19,17 @@ let themes = {
    "~/dark": "Dark",
 };
 
+let a = (
+   <cx>
+      <div />
+   </cx>
+);
+
+const Test = ({ x, y, z}) => <cx><div /></cx>
+
 export default (
    <cx>
+      <Test x y z />
       <MasterLayout
          app="gallery"
          shadow

@@ -1,16 +1,3 @@
-import * as Cx from '../core';
-import {Filter} from './Container';
+import { Container } from "./Container";
 
-export class PureContainer extends Cx.Widget<Cx.PureContainerProps> {
-
-   add(...args: Array<any>);
-   
-   clear();
-
-   addText(text: string);
-
-   find(filter: Filter, options?: Cx.Config) : any[];
-
-   findFirst(filter: Filter, options?: Cx.Config) : any;
-
-}
+export class PureContainer<T> extends Container<T> {}
