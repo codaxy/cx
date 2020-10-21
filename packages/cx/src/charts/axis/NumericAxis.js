@@ -336,7 +336,7 @@ class NumericScale {
          let start = Math.ceil((this.scale.min - this.scale.minPadding) / size);
          let end = Math.floor((this.scale.max + this.scale.maxPadding) / size);
          let result = [];
-         for (let i = start; i <= end; i++) result.push(i * size);
+         for (let i = start; i <= end; i++) result.push(i * size + 0);
          return result;
       });
    }

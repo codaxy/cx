@@ -1,27 +1,27 @@
 {
-  "name": "cx",
-  "version": "20.8.4",
-  "description": "Advanced JavaScript UI framework for admin and dashboard applications with ready to use grid, form and chart components.",
-  "main": "index.js",
-  "jsnext:main": "src/index.js",
-  "scripts": {
-    "build": "node build/index"
-  },
-  "author": "Codaxy",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "bugs": {
-    "url": "https://github.com/codaxy/cxjs"
-  },
-  "homepage": "https://cxjs.io",
-  "dependencies": {
-    "intl-io": "^0.3.0",
-    "route-parser": "^0.0.5"
-  },  
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:codaxy/cxjs.git"
-  },
-  "devDependencies": {
-    "react-test-renderer": "^16.13.1"
-  }
+   "name": "cx",
+   "version": "20.10.3",
+   "description": "Advanced JavaScript UI framework for admin and dashboard applications with ready to use grid, form and chart components.",
+   "main": "index.js",
+   "jsnext:main": "src/index.js",
+   "scripts": {
+      "build": "node build/index"
+   },
+   "author": "Codaxy",
+   "license": "SEE LICENSE IN LICENSE.md",
+   "bugs": {
+      "url": "https://github.com/codaxy/cxjs"
+   },
+   "homepage": "https://cxjs.io",
+   "dependencies": {
+      "intl-io": "^0.3.0",
+      "route-parser": "^0.0.5"
+   },   
+   "repository": {
+      "type": "git",
+      "url": "git@github.com:codaxy/cxjs.git"
+   },
+   "devDependencies": {
+      "react-test-renderer": "^16.13.1"
+   }
 }

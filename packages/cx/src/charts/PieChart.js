@@ -12,13 +12,15 @@ export class PieChart extends BoundedObject {
    declareData() {
       super.declareData(...arguments, {
          angle: undefined,
+         startAngle: 0,
+         clockwise: undefined
       });
    }
 
    explore(context, instance) {
       if (!instance.pie) instance.pie = new PieCalculator();
       var { data } = instance;
-      instance.pie.reset(data.angle);
+      instance.pie.reset(data.angle, data.startAngle, data.clockwise);
 
       context.push("pie", instance.pie);
       super.explore(context, instance);
@@ -40,11 +42,13 @@ export class PieChart extends BoundedObject {
    }
 }
 
-PieChart.prototype.anchors = "0 1 1 0";
+      PieChart.prototype.anchors = "0 1 1 0";
 
 class PieCalculator {
-   reset(angle) {
+   reset(angle, startAngle, clockwise) {
       this.angleTotal = (angle / 180) * Math.PI;
+      this.startAngle = (startAngle / 180) * Math.PI;
+      this.clockwise = clockwise;
       this.stacks = {};
    }
 
@@ -57,6 +61,8 @@ class PieCalculator {
    hash() {
       return {
          angleTotal: this.angleTotal,
+         startAngle: this.startAngle,
+         clockwise: this.clockwise,
          stacks: Object.keys(this.stacks)
             .map((s) => `${this.stacks[s].angleFactor}`)
             .join(":"),
@@ -70,7 +76,7 @@ class PieCalculator {
       for (var s in this.stacks) {
          var stack = this.stacks[s];
          stack.angleFactor = stack.total > 0 ? this.angleTotal / stack.total : 0;
-         stack.lastAngle = 0;
+         stack.lastAngle = this.startAngle;
       }
       this.cx = (rect.l + rect.r) / 2;
       this.cy = (rect.t + rect.b) / 2;
@@ -81,7 +87,12 @@ class PieCalculator {
       var s = this.stacks[stack];
       var angle = value * s.angleFactor;
       var startAngle = s.lastAngle;
-      s.lastAngle += angle;
+
+      if (!this.clockwise)
+         s.lastAngle += angle;
+      else
+         s.lastAngle -= angle;
+
       return {
          startAngle,
          endAngle: s.lastAngle,
@@ -343,17 +354,17 @@ export class PieSlice extends Container {
    }
 }
 
-PieSlice.prototype.offset = 0;
-PieSlice.prototype.r0 = 0;
-PieSlice.prototype.r = 50;
-PieSlice.prototype.percentageRadius = true;
-PieSlice.prototype.baseClass = "pieslice";
-PieSlice.prototype.legend = "legend";
-PieSlice.prototype.active = true;
-PieSlice.prototype.stack = "stack";
-PieSlice.prototype.legendAction = "auto";
-PieSlice.prototype.legendShape = "rect";
-PieSlice.prototype.hoverChannel = "default";
-PieSlice.prototype.styled = true;
+   PieSlice.prototype.offset = 0;
+   PieSlice.prototype.r0 = 0;
+   PieSlice.prototype.r = 50;
+   PieSlice.prototype.percentageRadius = true;
+   PieSlice.prototype.baseClass = "pieslice";
+   PieSlice.prototype.legend = "legend";
+   PieSlice.prototype.active = true;
+   PieSlice.prototype.stack = "stack";
+   PieSlice.prototype.legendAction = "auto";
+   PieSlice.prototype.legendShape = "rect";
+   PieSlice.prototype.hoverChannel = "default";
+   PieSlice.prototype.styled = true;
 
 Widget.alias("pie-chart", PieChart);

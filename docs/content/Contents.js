@@ -4,6 +4,8 @@ import { updateArray } from 'cx/data';
 import {Md} from '../components/Md'
 import {SideNav} from 'docs/components/SideNav';
 
+//Deprecated, see ./layout/DocsNav
+
 var contents = [{
     topic: 'Introduction',
     expanded: false,

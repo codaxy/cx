@@ -1,21 +1,29 @@
-import {View} from './View';
-import {Binding} from "./Binding";
+import { View } from "./View";
+import { Binding } from "./Binding";
 
 export class AugmentedViewBase extends View {
-
    getData() {
-      if (this.sealed && this.meta.version === this.cache.version)
+      if (this.meta.version === this.cache.version && this.sealed)
          return this.cache.result;
-      let data = this.store.getData();
-      if (this.sealed || this.immutable || this.store.sealed)
-         data = {...data};
-      this.embedAugmentData(data, data);
-      this.cache.result = data;
+      let parentStoreData = this.store.getData();
+      let result = this.getBaseData(parentStoreData);
+      this.embedAugmentData(result, parentStoreData);
+      this.cache.result = result;
+      this.cache.parentStoreData = parentStoreData;
       this.cache.version = this.meta.version;
       return this.cache.result;
    }
 
+   getBaseData(parentStoreData) {
+      if (this.sealed || this.immutable || this.store.sealed) return { ...parentStoreData };
+      return parentStoreData;
+   }
+
    embedAugmentData(result, parentStoreData) {
+      throw new Error("abstract");
+   }
+
+   isExtraKey(key) {
       throw new Error("abstract");
    }
 
@@ -24,10 +32,6 @@ export class AugmentedViewBase extends View {
    }
 
    deleteExtraKeyValue(key) {
-      throw new Error("abstract");
-   }
-
-   isExtraKey(key) {
       throw new Error("abstract");
    }
 
@@ -50,8 +54,7 @@ export class AugmentedViewBase extends View {
       let binding = Binding.get(path);
       if (this.isExtraKey(binding.parts[0])) {
          let bindingRoot = binding.parts[0];
-         if (binding.parts.length == 1)
-            return this.deleteExtraKeyValue(bindingRoot);
+         if (binding.parts.length == 1) return this.deleteExtraKeyValue(bindingRoot);
          let data = {};
          this.embedAugmentData(data, this.store.getData());
          let newValue = binding.delete(data)[bindingRoot];

@@ -394,7 +394,6 @@ class DateTimeInput extends VDOM.Component {
 
       switch (e.keyCode) {
          case KeyCode.enter:
-            e.stopPropagation();
             this.onChange(e, "enter");
             break;
 

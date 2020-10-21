@@ -1,9 +1,11 @@
-import {List, Repeater, Text, Link, Menu, Icon} from 'cx/widgets';
-import {KeySelection, History, Url, TreeAdapter} from 'cx/ui';
-import {HtmlElement} from 'cx/widgets';
+import { List, Repeater, Text, Link, Menu, Icon } from 'cx/widgets';
+import { KeySelection, History, Url, TreeAdapter } from 'cx/ui';
+import { HtmlElement } from 'cx/widgets';
+
+//Deprecated, see ./layout/DocsNav
 
 
-const onItemClick = (e, {store}) => {
+const onItemClick = (e, { store }) => {
     e.preventDefault();
     e.stopPropagation();
     var record = store.get('$topic');
@@ -19,7 +21,7 @@ export const SideNav = <cx>
         class="cxb-sidenav"
         records-bind="contents"
         recordName="$topic"
-        adapter={{type: TreeAdapter, childrenField: 'articles', expandedField: 'expanded'}}
+        adapter={{ type: TreeAdapter, childrenField: 'articles', expandedField: 'expanded' }}
         onItemClick={onItemClick}
         itemClassName={{
             "cxs-selected": { expr: '{url}=={$topic.url}' }
@@ -30,12 +32,12 @@ export const SideNav = <cx>
             trimWhitespace={false}
             class="cxe-sidenav-topic"
         >
-            <Text bind="$topic.topic"/>
+            <Text bind="$topic.topic" />
             <Icon
                 name="drop-down"
                 class={{
                     "cxe-sidenav-arrow": true,
-                    "cxs-expanded": {expr: "{$topic.expanded}"}
+                    "cxs-expanded": { expr: "{$topic.expanded}" }
                 }}
             />
         </div>

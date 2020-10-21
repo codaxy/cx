@@ -10,6 +10,7 @@ import { isDefined } from "../util/isDefined";
 import { isArray } from "../util/isArray";
 import { isObject } from "../util/isObject";
 import { isNonEmptyArray } from "../util/isNonEmptyArray";
+import { isUndefined } from "../util/isUndefined";
 
 let instanceId = 1000;
 
@@ -421,6 +422,28 @@ export class Instance {
          }
       });
       return changed;
+   }
+
+   nestedDataSet(key, value, dataConfig) {
+      let config = dataConfig[key];
+      if (!config)
+         throw new Error(`Unknown nested data key ${key}. Known keys are ${Object.keys(dataConfig).join(", ")}.`);
+
+      if (config.bind)
+         return isUndefined(value) ? this.store.deleteItem(config.bind) : this.store.setItem(config.bind, value);
+
+      if (!config.set)
+         throw new Error(
+            `Cannot change nested data value for ${key} as it's read-only. Either define it as a binding or define a set function.`
+         );
+      if (isString(config.set)) this.getControllerMethod(config.set)(value, this);
+      else if (isFunction(config.set)) config.set(value, this);
+      else
+         throw new Error(
+            `Cannot change nested data value for ${key} the defined setter is neither a function nor a controller method.`
+         );
+
+      return true;
    }
 
    replaceState(state) {

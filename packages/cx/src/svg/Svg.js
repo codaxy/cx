@@ -1,7 +1,8 @@
-import {Widget, VDOM} from '../ui/Widget';
-import {BoundedObject} from './BoundedObject';
-import {Rect} from './util/Rect';
-import {ResizeManager} from '../ui/ResizeManager';
+import { Widget, VDOM } from '../ui/Widget';
+import { BoundedObject } from './BoundedObject';
+import { Rect } from './util/Rect';
+import { ResizeManager } from '../ui/ResizeManager';
+import { addEventListenerWithOptions } from '../util/addEventListenerWithOptions';
 
 export class Svg extends BoundedObject {
 
@@ -10,7 +11,7 @@ export class Svg extends BoundedObject {
          width: 0,
          height: 0
       };
-      instance.state = {size};
+      instance.state = { size };
    }
 
    prepare(context, instance) {
@@ -39,6 +40,10 @@ export class Svg extends BoundedObject {
    }
 
    render(context, instance, key) {
+      let eventHandlers = instance.getJsxEventProps();
+      if (eventHandlers) {
+         delete eventHandlers["onWheelActive"];
+      }
       return (
          <SvgComponent
             key={key}
@@ -46,6 +51,7 @@ export class Svg extends BoundedObject {
             data={instance.data}
             options={context.options}
             size={instance.state.size}
+            eventHandlers={eventHandlers}
          >
             {this.renderChildren(context, instance)}
          </SvgComponent>
@@ -53,11 +59,11 @@ export class Svg extends BoundedObject {
    }
 }
 
-Svg.prototype.anchors = '0 1 1 0';
-Svg.prototype.baseClass = 'svg';
-Svg.prototype.autoWidth = false;
-Svg.prototype.autoHeight = false;
-Svg.prototype.aspectRatio = 1.618;
+   Svg.prototype.anchors = '0 1 1 0';
+   Svg.prototype.baseClass = 'svg';
+   Svg.prototype.autoWidth = false;
+   Svg.prototype.autoHeight = false;
+   Svg.prototype.aspectRatio = 1.618;
 
 function sameSize(a, b) {
    if (!a || !b)
@@ -69,14 +75,14 @@ function sameSize(a, b) {
 class SvgComponent extends VDOM.Component {
 
    render() {
-      var {instance, data, size, children} = this.props;
-      var {widget} = instance;
+      var { instance, data, size, children, eventHandlers } = this.props;
+      var { widget } = instance;
 
       var defs = [];
       for (var k in instance.clipRects) {
          let cr = instance.clipRects[k];
          defs.push(<clipPath key={k} id={k}>
-            <rect x={cr.l} y={cr.t} width={Math.max(0, cr.width())} height={Math.max(0, cr.height())}/>
+            <rect x={cr.l} y={cr.t} width={Math.max(0, cr.width())} height={Math.max(0, cr.height())} />
          </clipPath>);
       }
 
@@ -100,7 +106,7 @@ class SvgComponent extends VDOM.Component {
                this.el = el
             }}
             className={data.classNames} style={style}
-            { ...instance.getJsxEventProps()}
+            {...eventHandlers}
          >
             {
                size.width > 0 && size.height > 0 && (
@@ -118,8 +124,8 @@ class SvgComponent extends VDOM.Component {
 
    onResize() {
 
-      let {instance} = this.props;
-      let {widget} = this.props.instance;
+      let { instance } = this.props;
+      let { widget } = this.props.instance;
 
       let size = {
          width: this.el.clientWidth,
@@ -139,8 +145,14 @@ class SvgComponent extends VDOM.Component {
    }
 
    componentDidMount() {
-      this.offResize = ResizeManager.trackElement(this.el, ::this.onResize);
+      this.offResize = ResizeManager.trackElement(this.el, this.onResize.bind(this));
       this.onResize();
+      if (this.props.instance.widget.onWheelActive) {
+         this.offWheelActive = addEventListenerWithOptions(this.el.parentElement, "wheel", event => {
+            let { instance } = this.props;
+            instance.invoke("onWheelActive", event, instance);
+         }, { passive: false });
+      }
    }
 
    componentDidUpdate() {
@@ -148,10 +160,8 @@ class SvgComponent extends VDOM.Component {
    }
 
    componentWillUnmount() {
-      if (this.offResize) {
-         this.offResize();
-         delete this.offResize;
-      }
+      this.offResize && this.offResize();
+      this.offWheelActive && this.offWheelActive();
    }
 }
 

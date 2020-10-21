@@ -1,10 +1,9 @@
-import * as Cx from '../core';
-import {RenderingContext} from "./RenderingContext";
-import {View} from "../data/View";
-import {Widget, VDOM} from "./Widget";
+import * as Cx from "../core";
+import { RenderingContext } from "./RenderingContext";
+import { View } from "../data/View";
+import { Widget, VDOM } from "./Widget";
 
 export class Instance {
-
    store: View;
    data: Cx.Record;
    widget: Widget;
@@ -15,7 +14,7 @@ export class Instance {
 
    constructor(widget: Widget, key: string | number, parent?: Instance, store?: View);
 
-   setStore(store: View) : void;
+   setStore(store: View): void;
 
    init(context: RenderingContext): void;
 
@@ -31,7 +30,7 @@ export class Instance {
 
    set(prop: string, value: any, internal?: boolean);
 
-   definePropertySetter(prop: string, setter: (value: any) => void) : boolean;
+   definePropertySetter(prop: string, setter: (value: any) => void): boolean;
 
    /**
     * @protected
@@ -39,33 +38,32 @@ export class Instance {
     * @param value
     * @returns {boolean}
     */
-   protected doSet(prop: string, value: any) : boolean;
+   protected doSet(prop: string, value: any): boolean;
 
    replaceState(state: Cx.Config);
 
-   getInstanceCache() : InstanceCache;
+   getInstanceCache(): InstanceCache;
 
    clearChildrenCache();
 
-   getChild(context: RenderingContext | null, widget: Widget, keyPrefix?: string, store?: View) : Instance;
+   getChild(context: RenderingContext | null, widget: Widget, keyPrefix?: string, store?: View): Instance;
 
-   getDetachedChild(widget: Widget, key: number | string, store?: View) : Instance;
+   getDetachedChild(widget: Widget, key: number | string, store?: View): Instance;
 
    // TODO: check return type
-   prepareRenderCleanupChild(widget: Widget, store?: View, keyPrefix?: string, options?: object) : JSX.Element | void;
+   prepareRenderCleanupChild(widget: Widget, store?: View, keyPrefix?: string, options?: object): JSX.Element | void;
 
-   getJsxEventProps() : Cx.Config;
+   getJsxEventProps(): Cx.Config;
 
+   nestedDataSet(key: string, value: any, dataConfig: Cx.Config): boolean;
 }
 
 export class InstanceCache {
+   constructor(parent: Instance);
 
-   constructor(parent: Instance)
-
-   getChild(widget: Widget, store: View, keyPrefix?: string) : Instance;
+   getChild(widget: Widget, store: View, keyPrefix?: string): Instance;
 
    mark();
 
    sweep();
-
 }

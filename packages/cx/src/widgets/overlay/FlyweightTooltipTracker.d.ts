@@ -1,7 +1,7 @@
 import { Instance } from "../../ui/Instance";
 
 export interface FlyweightTooltipTrackerProps extends Cx.WidgetProps {
-   onGetTooltip(element: DOMElement, instance: Instance) : Cx.Config;
+   onGetTooltip(element: DOMElement, instance: Instance): Cx.Config;
 }
 
-export class FlyweightTooltipTracker extends Cx.Widget<FlyweightTooltipTrackerProps>;
+export class FlyweightTooltipTracker extends Cx.Widget<FlyweightTooltipTrackerProps> {}

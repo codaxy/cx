@@ -1749,7 +1749,7 @@ class GridComponent extends VDOM.Component {
       else if (dropTarget == 'row') {
          e.target = {
             index: start + dropInsertionIndex,
-            record: this.getRecordAt(start + dropInsertionIndex - 1),
+            record: this.getRecordAt(start + dropInsertionIndex),
          };
          instance.invoke("onRowDrop", e, instance);
       }
@@ -1855,7 +1855,7 @@ class GridComponent extends VDOM.Component {
             }
          }
          if (widget.onRowDragOver && instance.invoke("onRowDragOver", evt, instance) === false) cancel = true;
-         else if (s != this.state.dropInsertionIndex || this.state.dropTarget != 'row') {
+         else if (rowOverIndex != this.state.dropInsertionIndex || this.state.dropTarget != 'row') {
             this.setState({
                dropInsertionIndex: rowOverIndex,
                dropItemHeight: ev.source.height - 1,
@@ -2465,24 +2465,29 @@ class GridComponent extends VDOM.Component {
 
    beginDragDrop(e, record) {
       let { instance, data } = this.props;
-      let { widget, store, isSelected } = instance;
+      let { widget, store } = instance;
+
+      //get a fresh isSelected delegate
+      let isSelected = widget.selection.getIsSelectedDelegate(store);
 
       let selected = [];
 
-      let add = (r, index, force) => {
-         if (!r || !(force || isSelected(r, index))) return;
-         let record = widget.mapRecord(null, instance, r, index);
-         let row = record.row = instance.getDetachedChild(widget.row, "DD:" + record.key, record.store);
+      let add = (rec, data, index, force) => {
+         if (!data || !(force || isSelected(data, index))) return;
+         let mappedRecord = rec ? { ...rec } : widget.mapRecord(null, instance, data, index);
+         let row = mappedRecord.row = instance.getDetachedChild(widget.row, "DD:" + mappedRecord.key, mappedRecord.store);
          row.selected = true;
-         selected.push(record);
+         selected.push(mappedRecord);
       }
 
-      if (instance.records)
-         instance.records.forEach(r => add(r.data, r.index));
-      else
-         this.getRecordsSlice(0, data.totalRecordCount).forEach((r, index) => add(r, index));
+      if (!record.selected) {
+         if (instance.records)
+            instance.records.forEach(r => add(r, r.data, r.index));
+         else
+            this.getRecordsSlice(0, data.totalRecordCount).forEach((r, index) => add(null, r, index));
+      }
 
-      if (selected.length == 0) add(record.data, record.index, true);
+      if (selected.length == 0) add(record, record.data, record.index, true);
 
       let renderRow = this.createRowRenderer(false);
 

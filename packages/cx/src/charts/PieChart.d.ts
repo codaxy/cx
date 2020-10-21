@@ -5,9 +5,15 @@ import { PropertySelection, KeySelection } from "../ui/selection";
 interface PieChartProps extends BoundedObjectProps {
    /** Angle in degrees. Default is `360` which represents the full circle. */
    angle?: Cx.NumberProp;
+
+   /** Start angle in degrees. Indicates the starting point of the first stack. Default is `0`. */
+   startAngle?: Cx.NumberProp;
+
+   /** When set to `true`, stacks are rendered in clock wise direction. */
+   clockwise?: Cx.BooleanProp;
 }
 
-export class PieChart extends Cx.Widget<PieChartProps> {}
+export class PieChart extends Cx.Widget<PieChartProps> { }
 
 interface PieSliceProps extends Cx.StyledContainerProps {
    /** Used to indicate whether an item is active or not. Inactive items are shown only in the legend. */
@@ -62,7 +68,7 @@ interface PieSliceProps extends Cx.StyledContainerProps {
    tooltip?: Cx.StringProp | Cx.StructuredProp;
 
    /** Selection configuration. */
-   selection?: { type: typeof PropertySelection | typeof KeySelection; [prop: string]: any };
+   selection?: { type: typeof PropertySelection | typeof KeySelection;[prop: string]: any };
 
    /** A value used to identify the group of components participating in hover effect synchronization. */
    hoverChannel?: string;
@@ -71,4 +77,4 @@ interface PieSliceProps extends Cx.StyledContainerProps {
    hoverId?: Cx.StringProp;
 }
 
-export class PieSlice extends Cx.Widget<PieSliceProps> {}
+export class PieSlice extends Cx.Widget<PieSliceProps> { }

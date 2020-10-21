@@ -105,7 +105,7 @@ export class Axis extends BoundedObject {
                      dx={this.labelDx}
                      textAnchor={data.labelAnchor}
                      transform={transform}>
-                     {this.wrapLines(valueFormatter(v + 0), x, this.labelDy, offsetClass)}
+                     {this.wrapLines(valueFormatter(v), x, this.labelDy, offsetClass)}
                   </text>
                );
             });
@@ -165,27 +165,27 @@ export class Axis extends BoundedObject {
    }
 }
 
-Axis.prototype.anchors = '0 1 1 0';
-Axis.prototype.vertical = false;
-Axis.prototype.secondary = false;
-Axis.prototype.inverted = false;
-Axis.prototype.hidden = false;
-Axis.prototype.hideLabels = false;
+   Axis.prototype.anchors = '0 1 1 0';
+   Axis.prototype.vertical = false;
+   Axis.prototype.secondary = false;
+   Axis.prototype.inverted = false;
+   Axis.prototype.hidden = false;
+   Axis.prototype.hideLabels = false;
 
-Axis.prototype.tickSize = 3;
-Axis.prototype.minTickDistance = 25;
-Axis.prototype.minLabelDistanceVertical = 40;
-Axis.prototype.minLabelDistanceHorizontal = 50;
-Axis.prototype.labelOffset = 10;
-Axis.prototype.labelRotation = 0;
-Axis.prototype.labelAnchor = 'auto';
-Axis.prototype.labelDx = 'auto';
-Axis.prototype.labelDy = 'auto';
-Axis.prototype.labelWrap = false;
-Axis.prototype.labelLineCountDyFactor = 'auto';
-Axis.prototype.labelMaxLineLength = 10;
+   Axis.prototype.tickSize = 3;
+   Axis.prototype.minTickDistance = 25;
+   Axis.prototype.minLabelDistanceVertical = 40;
+   Axis.prototype.minLabelDistanceHorizontal = 50;
+   Axis.prototype.labelOffset = 10;
+   Axis.prototype.labelRotation = 0;
+   Axis.prototype.labelAnchor = 'auto';
+   Axis.prototype.labelDx = 'auto';
+   Axis.prototype.labelDy = 'auto';
+   Axis.prototype.labelWrap = false;
+   Axis.prototype.labelLineCountDyFactor = 'auto';
+   Axis.prototype.labelMaxLineLength = 10;
 
-Axis.namespace = 'ui.svg.chart.axis';
+   Axis.namespace = 'ui.svg.chart.axis';
 
 
 

@@ -1,26 +1,25 @@
-import { Record } from '../core'
-import { Binding } from './Binding';
+import { Record } from "../core";
+import { Binding } from "./Binding";
 import { Ref } from "./Ref";
 
 declare type Path = string | Binding;
 
-interface ViewConfig {
-   store?: View,
-   sealed?: boolean
+export interface ViewConfig {
+   store?: View;
+   sealed?: boolean;
 }
 
 export interface ViewMethods {
-   getData(): Record,
-   
-   init(path: Path, value: any): boolean,
-   
-   set(path: Path | Record, value?: any): boolean,
-   
+   getData(): Record;
+
+   init(path: Path, value: any): boolean;
+
+   set(path: Path | Record, value?: any): boolean;
+
    get(path: Path): any;
    get(paths: Path[]): any[];
    get(...paths: Path[]): any[];
 
-   
    /**
     * Removes data from the Store.
     * @param paths - One or more paths to be deleted.
@@ -29,16 +28,15 @@ export interface ViewMethods {
    delete(path: Path): boolean;
    delete(paths: Path[]): boolean;
    delete(...paths: Path[]): boolean;
-   
-   toggle(path: Path): boolean,
-   
+
+   toggle(path: Path): boolean;
+
    update(path: Path, updateFn: (currentValue: any, ...args) => any, ...args): boolean;
-   
-   ref<T = any>(path: string, defaultValue?: T): Ref<T>
+
+   ref<T = any>(path: string, defaultValue?: T): Ref<T>;
 }
 
 export class View implements ViewMethods {
-
    constructor(config?: ViewConfig);
 
    getData(): Record;

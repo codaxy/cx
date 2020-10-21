@@ -52,27 +52,7 @@ export class Restate extends PureContainer {
          privateData: this.data || {},
          data: cacheKey ? persistenceCache[cacheKey] || {} : {},
          dataSelector: this.privateDataSelector.create(),
-         onSet: (path, value) => {
-            let config = this.data[path];
-            if (!config || (!config.bind && !config.set))
-               throw new Error(
-                  `Cannot change ${path} in Restate as it's read-only. It's not a binding and it doesn't have a set function either.`
-               );
-
-            if (config.bind)
-               return isUndefined(value)
-                  ? instance.store.deleteItem(config.bind)
-                  : instance.store.setItem(config.bind, value);
-
-            if (isString(config.set)) instance.getControllerMethod(config.set)(value, instance);
-            else if (isFunction(config.set)) config.set(value, instance);
-            else
-               throw new Error(
-                  `Cannot set value for ${path} in Restate as the setter is neither a function or a controller method.`
-               );
-
-            return true;
-         },
+         onSet: (path, value) => instance.nestedDataSet(path, value, this.data),
       });
 
       instance.setStore = (store) => {

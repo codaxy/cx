@@ -1,10 +1,10 @@
-import {Button, DocumentTitle, PureContainer} from "cx/widgets";
+import { Button, DocumentTitle, PureContainer } from "cx/widgets";
 import { ContentRouter } from "../content/ContentRouter";
 import { MasterLayout } from "../../misc/layout";
 import { NavTree } from "../../misc/components/NavTree";
 import { docsNavTree } from "./DocsNav";
-import {ScrollIntoView} from "../../misc/components/ScrollIntoView";
-import {SearchWindow} from '../components/SearchWindow';
+import { ScrollIntoView } from "../../misc/components/ScrollIntoView";
+import { SearchWindow } from '../components/SearchWindow';
 import Controller from "./Controller";
 
 
@@ -19,6 +19,9 @@ export const Main = (
                 "~/charts": "Charts",
                 "~/examples": "Examples"
             }}
+            alternativeLinks={{
+                "~/charts": ["~/svg"],
+            }}
             title="Documentation"
             navTree={docsNavTree}
             controller={Controller}
@@ -29,10 +32,10 @@ export const Main = (
                     icon="binoculars"
                     mod="hollow"
                     style="margin-left: 8px; opacity: 0.9"
-                    onClick={(e, {store}) => { store.set("search.visible", true)}}
+                    onClick={(e, { store }) => { store.set("search.visible", true) }}
                 />
             </PureContainer>
-            <SearchWindow/>
+            <SearchWindow />
             <div class="master_content">
                 <ScrollIntoView
                     class={{

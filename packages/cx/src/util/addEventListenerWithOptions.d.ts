@@ -3,4 +3,4 @@ export function addEventListenerWithOptions(
    event: string,
    callback: (event: Event) => void,
    options: AddEventListenerOptions
-);
+): () => void;

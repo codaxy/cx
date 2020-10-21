@@ -24,3 +24,4 @@ export * from "./AugmentedViewBase";
 export * from "./ArrayElementView";
 export * from "./getAccessor";
 export * from "./defaultCompare";
+export * from "./NestedDataView";

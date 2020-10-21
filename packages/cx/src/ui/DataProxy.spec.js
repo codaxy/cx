@@ -9,6 +9,7 @@ import { computable } from "../data/computable";
 import { HtmlElement } from "../widgets/HtmlElement";
 import { useState } from "../hooks";
 import { createFunctionalComponent } from "./createFunctionalComponent";
+import { Widget } from "./Widget";
 
 describe("DataProxy", () => {
    it("can calculate values", () => {
@@ -264,5 +265,28 @@ describe("DataProxy", () => {
          props: {},
          children: ["b"],
       });
+   });
+
+   it("controllers set on the DataProxy can see calculated values", () => {
+      let value;
+      let widget = Widget.create(<cx>
+         <DataProxy
+            data={{
+               $value: 5
+            }}
+            controller={{
+               onInit() {
+                  value = this.store.get("$value")
+               },
+            }}
+         />
+      </cx>);
+
+      let store = new Store();
+
+      const component = renderer.create(<Cx widget={widget} store={store} subscribe immediate />);
+
+      let tree = component.toJSON();
+      assert.equal(value, 5);
    });
 });

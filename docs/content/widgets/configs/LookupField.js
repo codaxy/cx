@@ -1,4 +1,4 @@
-import {Md} from '../../../components/Md';
+import { Md } from '../../../components/Md';
 import field from './Field';
 
 export default {
@@ -71,7 +71,7 @@ export default {
         type: 'string',
         key: true,
         description: <cx><Md>Available only in `multiple` selection mode. Name of the field to store display text of the
-            selected value.
+        selected value.
             Default value is `text`.</Md></cx>
     },
 
@@ -181,6 +181,13 @@ export default {
         type: 'config',
         description: <cx><Md>
             Set to `true` to allow enter key events to be propagated. This is useful for submitting forms and closing grid cell editors.
+        </Md></cx>
+    },
+
+    submitOnDropdownEnterKey: {
+        type: 'config',
+        description: <cx><Md>
+            Set to `true` to allow dropdown enter key events to be propagated. This is useful for submitting forms on dropdown enter key selection.
         </Md></cx>
     },
 

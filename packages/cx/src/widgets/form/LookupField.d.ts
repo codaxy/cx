@@ -137,8 +137,11 @@ interface LookupFieldProps extends FieldProps {
    /** Set to true to allow enter key events to be propagated. This is useful for submitting forms or closing grid cell editors. */
    submitOnEnterKey?: Cx.BooleanProp,
 
+   /** Set to true to allow dropdown enter key events to be propagated. This is useful for submitting forms on dropdown enter key selection. */
+   submitOnDropdownEnterKey?: Cx.BooleanProp,
+
    /** Defaults to `false`. Used to make the field read-only. */
    readOnly?: Cx.BooleanProp,
 }
 
-export class LookupField extends Cx.Widget<LookupFieldProps> {}
+export class LookupField extends Cx.Widget<LookupFieldProps> { }
