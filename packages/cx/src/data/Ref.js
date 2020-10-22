@@ -5,8 +5,8 @@ import { Binding } from "./Binding";
 export class Ref extends Component {
    constructor(config) {
       super(config);
-      this.get = ::this.get;
-      if (this.set) this.set = ::this.set;
+      this.get = this.get.bind(this);
+      if (this.set) this.set = this.set.bind(this);
    }
 
    get() {

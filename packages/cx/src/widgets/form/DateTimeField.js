@@ -75,9 +75,14 @@ export class DateTimeField extends Field {
       let { data } = instance;
 
       if (data.value) {
-         let date = (data.date = new Date(data.value));
+         let date = new Date(data.value);
          if (isNaN(date.getTime())) data.formatted = String(data.value);
-         else data.formatted = Format.value(date, data.format);
+         else {
+            // handle utc edge cases
+            if (this.segment == "date") date = zeroTime(date);
+            data.formatted = Format.value(date, data.format);
+         }
+         data.date = date;
       } else data.formatted = "";
 
       if (data.refDate) data.refDate = zeroTime(new Date(data.refDate));
@@ -99,7 +104,7 @@ export class DateTimeField extends Field {
 
    validate(context, instance) {
       super.validate(context, instance);
-      var { data } = instance;
+      var { data, widget } = instance;
       if (!data.error && data.date) {
          if (isNaN(data.date)) data.error = this.inputErrorText;
          else {
@@ -115,6 +120,10 @@ export class DateTimeField extends Field {
                if (d < 0) data.error = StringTemplate.format(this.minValueErrorText, data.minValue);
                else if (d == 0 && data.minExclusive)
                   data.error = StringTemplate.format(this.minExclusiveErrorText, data.minValue);
+            }
+            if (widget.disabledDaysOfWeek) {
+               if (widget.disabledDaysOfWeek.includes(data.date.getDay()))
+                  data.error = this.disabledDaysOfWeekErrorText;
             }
          }
       }
@@ -165,6 +174,7 @@ DateTimeField.prototype.maxExclusiveErrorText = "Select a date before {0:d}.";
 DateTimeField.prototype.minValueErrorText = "Select {0:d} or later.";
 DateTimeField.prototype.minExclusiveErrorText = "Select a date after {0:d}.";
 DateTimeField.prototype.inputErrorText = "Invalid date entered.";
+DateTimeField.prototype.disabledDaysOfWeekErrorText = "Selected day of week is not allowed.";
 
 DateTimeField.prototype.suppressErrorsUntilVisited = true;
 DateTimeField.prototype.icon = "calendar";
@@ -173,6 +183,7 @@ DateTimeField.prototype.alwaysShowClear = false;
 DateTimeField.prototype.reactOn = "enter blur";
 DateTimeField.prototype.segment = "datetime";
 DateTimeField.prototype.picker = "auto";
+DateTimeField.prototype.disabledDaysOfWeek = null;
 
 Widget.alias("datetimefield", DateTimeField);
 Localization.registerPrototype("cx/widgets/DateTimeField", DateTimeField);
@@ -200,6 +211,7 @@ class DateTimeInput extends VDOM.Component {
                type: Calendar,
                partial: widget.partial,
                encoding: widget.encoding,
+               disabledDaysOfWeek: widget.disabledDaysOfWeek,
             };
             break;
 
@@ -322,7 +334,7 @@ class DateTimeInput extends VDOM.Component {
                })
             )}
             style={data.style}
-            onMouseDown={::this.onMouseDown}
+            onMouseDown={this.onMouseDown.bind(this)}
             onTouchStart={stopPropagation}
          >
             <input

@@ -4,7 +4,7 @@ import { FieldProps } from './Field';
 export interface DateTimeFieldProps extends FieldProps {
 
    /** Selected date. This should be a Date object or a valid date string consumable by Date.parse function. */
-   value?: Cx.Prop< string | Date >,
+   value?: Cx.Prop<string | Date>,
 
    /** Defaults to false. Used to make the field read-only. */
    readOnly?: Cx.BooleanProp,
@@ -16,13 +16,13 @@ export interface DateTimeFieldProps extends FieldProps {
    placeholder?: Cx.StringProp,
 
    /** Minimum date value. This should be a Date object or a valid date string consumable by Date.parse function. */
-   minValue?: Cx.Prop< string | Date >,
+   minValue?: Cx.Prop<string | Date>,
 
    /** Set to `true` to disallow the `minValue`. Default value is `false`. */
    minExclusive?: Cx.BooleanProp,
 
    /** Maximum date value. This should be a Date object or a valid date string consumable by Date.parse function. */
-   maxValue?: Cx.Prop< string | Date >,
+   maxValue?: Cx.Prop<string | Date>,
 
    /** Set to `true` to disallow the `maxValue`. Default value is `false`. */
    maxExclusive?: Cx.BooleanProp,
@@ -42,7 +42,7 @@ export interface DateTimeFieldProps extends FieldProps {
    /** Minimum value error text. */
    minValueErrorText?: string,
 
-    /** Minimum exclusive value error text. */
+   /** Minimum exclusive value error text. */
    minExclusiveErrorText?: string,
 
    /** Error message used to indicate wrong user input, e.g. invalid date entered. */
@@ -72,8 +72,11 @@ export interface DateTimeFieldProps extends FieldProps {
     * Default implementation is Date.toISOString.
     * See also Culture.setDefaultDateEncoding.
     */
-   encoding?: (date: Date) => any
+   encoding?: (date: Date) => any,
+
+   /**  Defines which days of week should be displayed as disabled, i.e. `[0, 6]` will make Sunday and Saturday unselectable. */
+   disabledDaysOfWeek?: number[]
 
 }
 
-export class DateTimeField extends Cx.Widget<DateTimeFieldProps> {}
+export class DateTimeField extends Cx.Widget<DateTimeFieldProps> { }

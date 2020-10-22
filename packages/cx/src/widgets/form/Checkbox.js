@@ -161,8 +161,8 @@ class CheckboxCmp extends VDOM.Component {
             })}
             style={CSS.parseStyle(data.inputStyle)}
             id={data.id}
-            onClick={::this.onClick}
-            onKeyDown={::this.onKeyDown}
+            onClick={this.onClick.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
          >
             {check == "check" && <CheckIcon className={CSS.element(baseClass, "input-check")} />}
             {check == "indeterminate" && <SquareIcon className={CSS.element(baseClass, "input-check")} />}

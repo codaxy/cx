@@ -281,26 +281,26 @@ export class OverlayComponent extends VDOM.Component {
             className={data.classNames}
             style={data.style}
             tabIndex={widget.focusable ? 0 : null}
-            onFocus={::this.onFocus}
-            onBlur={::this.onBlur}
-            onKeyDown={::this.onKeyDown}
-            onMouseDown={::this.onMouseDown}
-            onMouseUp={::this.onMouseUp}
-            onMouseMove={::this.onMouseMove}
-            onTouchStart={::this.onMouseDown}
-            onTouchEnd={::this.onMouseUp}
-            onTouchMove={::this.onMouseMove}
-            onMouseLeave={::this.onMouseLeave}
-            onMouseEnter={::this.onMouseEnter}
-            onClick={::this.onClick}
-            onDidUpdate={::this.overlayDidUpdate}
+            onFocus={this.onFocus.bind(this)}
+            onBlur={this.onBlur.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
+            onMouseDown={this.onMouseDown.bind(this)}
+            onMouseUp={this.onMouseUp.bind(this)}
+            onMouseMove={this.onMouseMove.bind(this)}
+            onTouchStart={this.onMouseDown.bind(this)}
+            onTouchEnd={this.onMouseUp.bind(this)}
+            onTouchMove={this.onMouseMove.bind(this)}
+            onMouseLeave={this.onMouseLeave.bind(this)}
+            onMouseEnter={this.onMouseEnter.bind(this)}
+            onClick={this.onClick.bind(this)}
+            onDidUpdate={this.overlayDidUpdate.bind(this)}
          >
             {widget.modal ||
                (widget.backdrop && (
                   <div
                      key="backdrop"
                      className={CSS.element(baseClass, "modal-backdrop")}
-                     onClick={::this.onBackdropClick}
+                     onClick={this.onBackdropClick.bind(this)}
                   />
                ))}
             {this.renderOverlayBody()}
@@ -338,7 +338,7 @@ export class OverlayComponent extends VDOM.Component {
    onFocus() {
       FocusManager.nudge();
       this.onFocusIn();
-      if (this.el) oneFocusOut(this, this.el, ::this.onFocusOut);
+      if (this.el) oneFocusOut(this, this.el, this.onFocusOut.bind(this));
    }
 
    onBlur() {
@@ -407,7 +407,7 @@ export class OverlayComponent extends VDOM.Component {
             db: cursor.clientY - rect.bottom,
             rect: rect,
          };
-         captureMouseOrTouch(e, ::this.onMouseMove, null, captureData, prefix + "-resize");
+         captureMouseOrTouch(e, this.onMouseMove.bind(this), null, captureData, prefix + "-resize");
       } else if (data.draggable) {
          ddMouseDown(e);
       }
@@ -502,7 +502,7 @@ export class OverlayComponent extends VDOM.Component {
             dy: cursor.clientY - rect.top,
          };
 
-         captureMouseOrTouch(e, ::this.onMove, null, data, getComputedStyle(e.target).cursor);
+         captureMouseOrTouch(e, this.onMove.bind(this), null, data, getComputedStyle(e.target).cursor);
       }
    }
 
@@ -557,13 +557,13 @@ export class OverlayComponent extends VDOM.Component {
 
       let childHasFocus = isSelfOrDescendant(this.el, document.activeElement);
 
-      if (childHasFocus) oneFocusOut(this, this.el, ::this.onFocusOut);
+      if (childHasFocus) oneFocusOut(this, this.el, this.onFocusOut.bind(this));
       else {
          if (!widget.autoFocusFirstChild || !FocusManager.focusFirstChild(this.el))
             if (widget.focusable && widget.autoFocus) FocusManager.focus(this.el);
       }
 
-      instance.onBeforeDismiss = ::this.onBeforeDismiss;
+      instance.onBeforeDismiss = this.onBeforeDismiss.bind(this);
 
       if (subscribeToBeforeDismiss) {
          subscribeToBeforeDismiss(instance.onBeforeDismiss);

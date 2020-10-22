@@ -44,11 +44,11 @@ GridRow.prototype.styled = true; //styles used on the wrapper component
 export class GridRowComponent extends VDOM.Component {
    constructor(props) {
       super(props);
-      this.onMouseMove = ::this.onMouseMove;
-      this.onMouseDown = ::this.onMouseDown;
-      this.onMouseLeave = ::this.onMouseLeave;
-      this.onClick = ::this.onClick;
-      this.onKeyDown = ::this.onKeyDown;
+      this.onMouseMove = this.onMouseMove.bind(this);
+      this.onMouseDown = this.onMouseDown.bind(this);
+      this.onMouseLeave = this.onMouseLeave.bind(this);
+      this.onClick = this.onClick.bind(this);
+      this.onKeyDown = this.onKeyDown.bind(this);
 
       let { grid, instance } = props;
 

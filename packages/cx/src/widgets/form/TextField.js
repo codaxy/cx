@@ -68,17 +68,17 @@ export class TextField extends Field {
    }
 }
 
-   TextField.prototype.baseClass = "textfield";
-   TextField.prototype.reactOn = "change input blur";
-   TextField.prototype.inputType = "text";
-   TextField.prototype.validationErrorText = "The entered value is not valid.";
-   TextField.prototype.minLengthValidationErrorText = "Enter {[{0}-{1}]} more character(s).";
-   TextField.prototype.maxLengthValidationErrorText = "Use {0} characters or fewer.";
-   TextField.prototype.suppressErrorsUntilVisited = true;
-   TextField.prototype.icon = null;
-   TextField.prototype.showClear = false;
-   TextField.prototype.alwaysShowClear = false;
-   TextField.prototype.keyboardShortcut = false;
+TextField.prototype.baseClass = "textfield";
+TextField.prototype.reactOn = "change input blur";
+TextField.prototype.inputType = "text";
+TextField.prototype.validationErrorText = "The entered value is not valid.";
+TextField.prototype.minLengthValidationErrorText = "Enter {[{0}-{1}]} more character(s).";
+TextField.prototype.maxLengthValidationErrorText = "Use {0} characters or fewer.";
+TextField.prototype.suppressErrorsUntilVisited = true;
+TextField.prototype.icon = null;
+TextField.prototype.showClear = false;
+TextField.prototype.alwaysShowClear = false;
+TextField.prototype.keyboardShortcut = false;
 
 Localization.registerPrototype("cx/widgets/TextField", TextField);
 
@@ -157,13 +157,13 @@ class Input extends VDOM.Component {
                tabIndex={data.tabIndex}
                placeholder={data.placeholder}
                {...data.inputAttrs}
-               onMouseMove={::this.onMouseMove}
-               onMouseLeave={::this.onMouseLeave}
+               onMouseMove={this.onMouseMove.bind(this)}
+               onMouseLeave={this.onMouseLeave.bind(this)}
                onInput={(e) => this.onChange(e, "input")}
                onChange={(e) => this.onChange(e, "change")}
-               onKeyDown={::this.onKeyDown}
-               onFocus={::this.onFocus}
-               onBlur={::this.onBlur}
+               onKeyDown={this.onKeyDown.bind(this)}
+               onFocus={this.onFocus.bind(this)}
+               onBlur={this.onBlur.bind(this)}
                onClick={stopPropagation}
             />
             {insideButton}

@@ -1,4 +1,4 @@
-import {Md} from '../../../components/Md';
+import { Md } from '../../../components/Md';
 import field from './Field';
 import calendar from './Calendar';
 
@@ -20,7 +20,7 @@ export default {
     baseClass: {
         type: 'string',
         description: <cx><Md>
-         Base CSS class to be applied to the field. Defaults to `datefield`.
+            Base CSS class to be applied to the field. Defaults to `datefield`.
         </Md></cx>
     },
     format: {
@@ -79,4 +79,10 @@ export default {
             Set to `true` to auto open the time picker. Commonly used in cell-editable grids.
         </Md></cx>
     },
+    disabledDaysOfWeek: {
+        type: 'array',
+        description: <cx><Md>
+            Defines which days of week should be displayed as disabled, i.e. `[0, 6]` will make Sunday and Saturday unselectable.
+        </Md></cx>
+    }
 };

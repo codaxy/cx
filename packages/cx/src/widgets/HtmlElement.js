@@ -27,7 +27,7 @@ export class HtmlElement extends Container {
       super(config);
 
       if (isUndefined(this.jsxAttributes) && config)
-         this.jsxAttributes = Object.keys(config).filter(::this.isValidHtmlAttribute);
+         this.jsxAttributes = Object.keys(config).filter(this.isValidHtmlAttribute.bind(this));
    }
 
    declareData() {

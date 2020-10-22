@@ -211,7 +211,7 @@ class Input extends VDOM.Component {
                onMouseMove={(e) => tooltipMouseMove(e, ...getFieldTooltip(this.props.instance))}
                onMouseLeave={(e) => tooltipMouseLeave(e, ...getFieldTooltip(this.props.instance))}
                onChange={(e) => this.onChange(e, "change")}
-               onKeyDown={::this.onKeyDown}
+               onKeyDown={this.onKeyDown.bind(this)}
                onBlur={(e) => {
                   this.onChange(e, "blur");
                }}

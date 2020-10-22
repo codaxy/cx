@@ -81,5 +81,11 @@ export default {
             Localizable text for the todayButton. Defaults to `"Today"`.
             </Md>
         </cx>
+    },
+    disabledDaysOfWeek: {
+        type: 'array',
+        description: <cx><Md>
+            Defines which days of week should be displayed as disabled, i.e. `[0, 6]` will make Sunday and Saturday unselectable.
+        </Md></cx>
     }
 };

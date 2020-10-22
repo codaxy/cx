@@ -48,6 +48,7 @@ export default (
          ])}
          title="Gallery"
          topLinks={themes}
+         alternativeLinks={{}}
       >
          <ScrollReset trigger={bind("url")} />
          <div class="fullheight master_content">

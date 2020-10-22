@@ -46,10 +46,10 @@ class DateTimePickerComponent extends VDOM.Component {
 
       let { widget } = props.instance;
 
-      this.handleChange = ::this.handleChange;
-      this.onFocus = ::this.onFocus;
-      this.onBlur = ::this.onBlur;
-      this.onKeyDown = ::this.onKeyDown;
+      this.handleChange = this.handleChange.bind(this);
+      this.onFocus = this.onFocus.bind(this);
+      this.onBlur = this.onBlur.bind(this);
+      this.onKeyDown = this.onKeyDown.bind(this);
 
       let showDate = props.segment.indexOf("date") !== -1;
       let showTime = props.segment.indexOf("time") !== -1;
@@ -318,7 +318,7 @@ class DateTimePickerComponent extends VDOM.Component {
    }
 
    onFocus() {
-      oneFocusOut(this, this.el, ::this.onFocusOut);
+      oneFocusOut(this, this.el, this.onFocusOut.bind(this));
 
       if (!this.state.activeWheel) {
          let firstWheel = null;

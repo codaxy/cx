@@ -136,7 +136,7 @@ class MenuItemComponent extends VDOM.Component {
             ...widget.dropdownOptions,
             relatedElement: this.el.parentElement,
             placement: widget.placement,
-            onKeyDown: ::this.onDropdownKeyDown,
+            onKeyDown: this.onDropdownKeyDown.bind(this),
             items: widget.dropdown,
             parentPositionChangeEvent,
             pipeValidateDropdownPosition: (cb) => {
@@ -209,13 +209,13 @@ class MenuItemComponent extends VDOM.Component {
             ref={(el) => {
                this.el = el;
             }}
-            onKeyDown={::this.onKeyDown}
-            onMouseDown={::this.onMouseDown}
-            onMouseEnter={::this.onMouseEnter}
-            onMouseLeave={::this.onMouseLeave}
-            onFocus={::this.onFocus}
-            onClick={::this.onClick}
-            onBlur={::this.onBlur}
+            onKeyDown={this.onKeyDown.bind(this)}
+            onMouseDown={this.onMouseDown.bind(this)}
+            onMouseEnter={this.onMouseEnter.bind(this)}
+            onMouseLeave={this.onMouseLeave.bind(this)}
+            onFocus={this.onFocus.bind(this)}
+            onClick={this.onClick.bind(this)}
+            onBlur={this.onBlur.bind(this)}
          >
             {children}
             {icon}
@@ -393,7 +393,7 @@ class MenuItemComponent extends VDOM.Component {
    onFocus() {
       let { widget } = this.props.instance;
       if (widget.dropdown) {
-         oneFocusOut(this, this.el, ::this.onFocusOut);
+         oneFocusOut(this, this.el, this.onFocusOut.bind(this));
          debug(menuFlag, "MenuItem", "focus", this.el, document.activeElement);
          this.clearAutoFocusTimer();
          if (widget.openOnFocus) this.openDropdown();

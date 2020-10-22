@@ -1,11 +1,10 @@
-import { Widget, VDOM } from '../../ui/Widget';
-import { Container } from '../../ui/Container';
-import { ddMouseDown, ddDetect, ddMouseUp, initiateDragDrop, isDragHandleEvent } from './ops';
-import {preventFocus} from "../../ui/FocusManager";
-import {parseStyle} from "../../util/parseStyle";
+import { Widget, VDOM } from "../../ui/Widget";
+import { Container } from "../../ui/Container";
+import { ddMouseDown, ddDetect, ddMouseUp, initiateDragDrop, isDragHandleEvent } from "./ops";
+import { preventFocus } from "../../ui/FocusManager";
+import { parseStyle } from "../../util/parseStyle";
 
 export class DragSource extends Container {
-
    init() {
       this.cloneStyle = parseStyle(this.cloneStyle);
       super.init();
@@ -17,60 +16,60 @@ export class DragSource extends Container {
          data: { structured: true },
          cloneStyle: { structured: true },
          cloneClass: { structured: true },
-      })
+      });
    }
 
    explore(context, instance) {
-      context.push('dragHandles', instance.dragHandles = []);
+      context.push("dragHandles", (instance.dragHandles = []));
       super.explore(context, instance);
    }
 
    exploreCleanup(context, instance) {
-      context.pop('dragHandles');
+      context.pop("dragHandles");
    }
 
    render(context, instance, key) {
-      return <DragSourceComponent key={key} instance={instance} handled={this.handled || instance.dragHandles.length > 0}>
-         {this.renderChildren(context, instance)}
-      </DragSourceComponent>
+      return (
+         <DragSourceComponent key={key} instance={instance} handled={this.handled || instance.dragHandles.length > 0}>
+            {this.renderChildren(context, instance)}
+         </DragSourceComponent>
+      );
    }
 }
 
 DragSource.prototype.styled = true;
-DragSource.prototype.baseClass = 'dragsource';
+DragSource.prototype.baseClass = "dragsource";
 DragSource.prototype.hideOnDrag = false;
 DragSource.prototype.handled = false;
 
-Widget.alias('dragsource', DragSource);
+Widget.alias("dragsource", DragSource);
 
 class DragSourceComponent extends VDOM.Component {
-
    constructor(props) {
       super(props);
-      this.state = {dragged: false};
+      this.state = { dragged: false };
 
-      this.beginDragDrop = ::this.beginDragDrop;
-      this.onMouseMove = ::this.onMouseMove;
-      this.onMouseDown = ::this.onMouseDown;
-      this.setRef = el => {
-         this.el = el
+      this.beginDragDrop = this.beginDragDrop.bind(this);
+      this.onMouseMove = this.onMouseMove.bind(this);
+      this.onMouseDown = this.onMouseDown.bind(this);
+      this.setRef = (el) => {
+         this.el = el;
       };
    }
 
    render() {
-      let {instance, children, handled} = this.props;
-      let {data, widget} = instance;
-      let {CSS} = widget;
+      let { instance, children, handled } = this.props;
+      let { data, widget } = instance;
+      let { CSS } = widget;
 
-      if (this.state.dragged && widget.hideOnDrag)
-         return null;
+      if (this.state.dragged && widget.hideOnDrag) return null;
 
       let classes = [
          data.classNames,
          CSS.state({
             dragged: this.state.dragged,
-            draggable: !handled
-         })
+            draggable: !handled,
+         }),
       ];
 
       let eventHandlers = {
@@ -80,23 +79,17 @@ class DragSourceComponent extends VDOM.Component {
          onTouchMove: this.onMouseMove,
          onMouseMove: this.onMouseMove,
          onTouchEnd: ddMouseUp,
-         onMouseUp: ddMouseUp
+         onMouseUp: ddMouseUp,
       };
 
       delete eventHandlers.onDragStart;
       delete eventHandlers.onDragEnd;
 
       return (
-         <div
-            id={data.id}
-            ref={this.setRef}
-            className={CSS.expand(classes)}
-            style={data.style}
-            {...eventHandlers}
-         >
+         <div id={data.id} ref={this.setRef} className={CSS.expand(classes)} style={data.style} {...eventHandlers}>
             {children}
          </div>
-      )
+      );
    }
 
    onMouseDown(e) {
@@ -116,38 +109,39 @@ class DragSourceComponent extends VDOM.Component {
    }
 
    beginDragDrop(e) {
-      let {instance} = this.props;
-      let {data, widget, store} = instance;
+      let { instance } = this.props;
+      let { data, widget, store } = instance;
 
-      if (widget.onDragStart && instance.invoke('onDragStart', e, instance) === false)
-         return;
+      if (widget.onDragStart && instance.invoke("onDragStart", e, instance) === false) return;
 
-      initiateDragDrop(e, {
-         sourceEl: this.el,
-         source: {
-            store: store,
-            data: data.data
+      initiateDragDrop(
+         e,
+         {
+            sourceEl: this.el,
+            source: {
+               store: store,
+               data: data.data,
+            },
+            clone: {
+               widget: widget.clone || widget,
+               store,
+               class: data.cloneClass,
+               style: data.cloneStyle,
+               cloneContent: !widget.clone,
+               matchSize: !widget.clone,
+               matchCursorOffset: !widget.clone,
+            },
          },
-         clone: {
-            widget: widget.clone || widget,
-            store,
-            "class": data.cloneClass,
-            style: data.cloneStyle,
-            cloneContent: !widget.clone,
-            matchSize: !widget.clone,
-            matchCursorOffset: !widget.clone,
+         (e) => {
+            this.setState({
+               dragged: false,
+            });
+            if (widget.onDragEnd) instance.invoke("onDragEnd", e, instance);
          }
-      }, (e) => {
-         this.setState({
-            dragged: false
-         });
-         if (widget.onDragEnd)
-            instance.invoke('onDragEnd', e, instance);
-      });
+      );
 
       this.setState({
-         dragged: true
-      })
+         dragged: true,
+      });
    }
 }
-

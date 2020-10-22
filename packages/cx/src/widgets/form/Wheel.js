@@ -56,8 +56,8 @@ export class WheelComponent extends VDOM.Component {
       this.scrollRef = (el) => {
          this.scrollEl = el;
       };
-      this.onWheel = ::this.onWheel;
-      this.onKeyDown = ::this.onKeyDown;
+      this.onWheel = this.onWheel.bind(this);
+      this.onKeyDown = this.onKeyDown.bind(this);
    }
 
    render() {
@@ -104,8 +104,8 @@ export class WheelComponent extends VDOM.Component {
                <div
                   className={CSS.element(baseClass, "vscroll")}
                   ref={this.scrollRef}
-                  onTouchStart={::this.onTouchStart}
-                  onTouchEnd={::this.onTouchEnd}
+                  onTouchStart={this.onTouchStart.bind(this)}
+                  onTouchEnd={this.onTouchEnd.bind(this)}
                >
                   <div
                      className={CSS.element(baseClass, "wheel")}

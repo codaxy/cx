@@ -87,7 +87,7 @@ class UploadButtonComponent extends VDOM.Component {
                   title=" "
                   multiple={widget.multiple}
                   tabIndex={data.tabIndex}
-                  onChange={::this.onFileSelected}
+                  onChange={this.onFileSelected.bind(this)}
                />
             )}
          </div>

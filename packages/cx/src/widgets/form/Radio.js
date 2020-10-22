@@ -159,8 +159,8 @@ class RadioCmp extends VDOM.Component {
             })}
             style={CSS.parseStyle(data.inputStyle)}
             id={data.id}
-            onClick={::this.onClick}
-            onKeyDown={::this.onKeyDown}
+            onClick={this.onClick.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
          />
       );
    }

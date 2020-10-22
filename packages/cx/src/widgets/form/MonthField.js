@@ -324,7 +324,7 @@ class MonthInput extends VDOM.Component {
                })
             )}
             style={data.style}
-            onMouseDown={::this.onMouseDown}
+            onMouseDown={this.onMouseDown.bind(this)}
             onTouchStart={stopPropagation}
             onClick={stopPropagation}
          >

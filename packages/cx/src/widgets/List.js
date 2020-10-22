@@ -212,9 +212,9 @@ class ListComponent extends VDOM.Component {
          focused: focused,
       };
 
-      this.handleItemMouseDown = ::this.handleItemMouseDown;
-      this.handleItemDoubleClick = ::this.handleItemDoubleClick;
-      this.handleItemClick = ::this.handleItemClick;
+      this.handleItemMouseDown = this.handleItemMouseDown.bind(this);
+      this.handleItemDoubleClick = this.handleItemDoubleClick.bind(this);
+      this.handleItemClick = this.handleItemClick.bind(this);
    }
 
    shouldComponentUpdate(props, state) {
@@ -225,7 +225,7 @@ class ListComponent extends VDOM.Component {
       let { instance } = this.props;
       let { widget } = instance;
       if (widget.pipeKeyDown) {
-         instance.invoke("pipeKeyDown", ::this.handleKeyDown, instance);
+         instance.invoke("pipeKeyDown", this.handleKeyDown.bind(this), instance);
          this.showCursor();
       }
 
@@ -349,10 +349,10 @@ class ListComponent extends VDOM.Component {
             style={data.style}
             tabIndex={widget.focusable && selectable && items.length > 0 ? data.tabIndex || 0 : null}
             onMouseDown={preventFocusOnTouch}
-            onKeyDown={::this.handleKeyDown}
-            onMouseLeave={::this.handleMouseLeave}
-            onFocus={::this.onFocus}
-            onBlur={::this.onBlur}
+            onKeyDown={this.handleKeyDown.bind(this)}
+            onMouseLeave={this.handleMouseLeave.bind(this)}
+            onFocus={this.onFocus.bind(this)}
+            onBlur={this.onBlur.bind(this)}
          >
             {children}
          </ul>
@@ -478,8 +478,7 @@ class ListComponent extends VDOM.Component {
 
    handleMouseLeave() {
       let { widget } = this.props.instance;
-      if (!widget.focused)
-         this.moveCursor(-1, { hover: true });
+      if (!widget.focused) this.moveCursor(-1, { hover: true });
    }
 
    handleKeyDown(e) {

@@ -123,12 +123,12 @@ class WindowComponent extends OverlayComponent {
                }}
                className={CSS.element(baseClass, "header")}
                style={data.headerStyle}
-               onMouseDown={::this.onHeaderMouseDown}
+               onMouseDown={this.onHeaderMouseDown.bind(this)}
                onMouseUp={ddMouseUp}
-               onMouseMove={::this.onHeaderMouseMove}
-               onTouchStart={::this.onHeaderMouseDown}
+               onMouseMove={this.onHeaderMouseMove.bind(this)}
+               onTouchStart={this.onHeaderMouseDown.bind(this)}
                onTouchEnd={ddMouseUp}
-               onTouchMove={::this.onHeaderMouseMove}
+               onTouchMove={this.onHeaderMouseMove.bind(this)}
             >
                {this.props.header}
             </header>

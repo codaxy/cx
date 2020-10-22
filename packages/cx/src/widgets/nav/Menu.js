@@ -145,14 +145,18 @@ class MenuComponent extends VDOM.Component {
             )}
             style={data.style}
             onBlur={FocusManager.nudge()}
-            onKeyDown={::this.onKeyDown}
+            onKeyDown={this.onKeyDown.bind(this)}
          >
             {children.map((content, index) => {
                let key = content && typeof content == "object" && content.key ? content.key : index;
 
                if (content && content.spacer) {
-                  return widget.horizontal && index < this.state.nonOverflownItemCount
-                     && <li className={CSS.element(baseClass, "spacer")} key={key} />
+                  return (
+                     widget.horizontal &&
+                     index < this.state.nonOverflownItemCount && (
+                        <li className={CSS.element(baseClass, "spacer")} key={key} />
+                     )
+                  );
                }
 
                return (
@@ -167,7 +171,7 @@ class MenuComponent extends VDOM.Component {
                      itemInfo={this.itemInfo}
                      itemKey={key}
                      itemIndex={index}
-                     moveCursor={::this.moveCursor}
+                     moveCursor={this.moveCursor.bind(this)}
                   >
                      {content}
                   </MenuItemComponent>
@@ -251,9 +255,9 @@ class MenuComponent extends VDOM.Component {
          FocusManager.focusFirst(this.itemInfo[0].el);
       if (widget.overflow) {
          this.measureOverflow();
-         this.unsubscribeResize = ResizeManager.trackElement(this.el, ::this.measureOverflow);
+         this.unsubscribeResize = ResizeManager.trackElement(this.el, this.measureOverflow.bind(this));
       }
-      this.unsubscribeFocusOut = FocusManager.onFocusOut(this.el, ::this.onFocusOut);
+      this.unsubscribeFocusOut = FocusManager.onFocusOut(this.el, this.onFocusOut.bind(this));
    }
 
    componentDidUpdate() {
@@ -261,7 +265,6 @@ class MenuComponent extends VDOM.Component {
    }
 
    measureOverflow() {
-
       let { instance } = this.props;
       let { widget } = instance;
       let { CSS, baseClass } = widget;
@@ -344,9 +347,9 @@ class MenuItemComponent extends VDOM.Component {
                };
             }}
             className={CSS.element(baseClass, "item", mods)}
-            onFocus={::this.onFocus}
-            onMouseDown={::this.onMouseDown}
-            onKeyDown={::this.onKeyDown}
+            onFocus={this.onFocus.bind(this)}
+            onMouseDown={this.onMouseDown.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
          >
             {this.props.children}
          </li>

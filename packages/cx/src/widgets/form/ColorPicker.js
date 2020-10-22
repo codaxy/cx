@@ -130,15 +130,15 @@ class ColorPickerComponent extends VDOM.Component {
          <div
             className={data.classNames}
             style={data.style}
-            onBlur={::this.onBlur}
+            onBlur={this.onBlur.bind(this)}
             onMouseDown={stopPropagation}
             onTouchStart={stopPropagation}
          >
             <div
                className={CSS.element(baseClass, "picker")}
                style={{ backgroundColor: hcolor }}
-               onMouseDown={::this.onSLSelect}
-               onTouchStart={::this.onSLSelect}
+               onMouseDown={this.onSLSelect.bind(this)}
+               onTouchStart={this.onSLSelect.bind(this)}
             >
                <div
                   className={CSS.element(baseClass, "indicator")}
@@ -152,8 +152,8 @@ class ColorPickerComponent extends VDOM.Component {
             <div className={CSS.element(baseClass, "details")}>
                <div
                   className={CSS.element(baseClass, "hue")}
-                  onMouseDown={::this.onHueSelect}
-                  onTouchStart={::this.onHueSelect}
+                  onMouseDown={this.onHueSelect.bind(this)}
+                  onTouchStart={this.onHueSelect.bind(this)}
                   onWheel={(e) => {
                      this.onWheel(e, "h", 10);
                   }}
@@ -217,8 +217,8 @@ class ColorPickerComponent extends VDOM.Component {
                </div>
                <div
                   className={CSS.element(baseClass, "alpha")}
-                  onMouseDown={::this.onAlphaSelect}
-                  onTouchStart={::this.onAlphaSelect}
+                  onMouseDown={this.onAlphaSelect.bind(this)}
+                  onTouchStart={this.onAlphaSelect.bind(this)}
                   onWheel={(e) => {
                      this.onWheel(e, "a", 0.1);
                   }}

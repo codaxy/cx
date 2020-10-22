@@ -34,14 +34,14 @@ export class Cx extends VDOM.Component {
       };
 
       if (props.subscribe) {
-         this.unsubscribe = this.store.subscribe(::this.update);
+         this.unsubscribe = this.store.subscribe(this.update.bind(this));
          this.state.data = this.store.getData();
       }
 
       this.flags = {};
       this.renderCount = 0;
 
-      if (props.onError) this.componentDidCatch = ::this.componentDidCatchHandler;
+      if (props.onError) this.componentDidCatch = this.componentDidCatchHandler.bind(this);
 
       this.deferCounter = 0;
       this.waitForIdle();
@@ -86,7 +86,8 @@ export class Cx extends VDOM.Component {
    componentDidMount() {
       this.componentDidUpdate();
 
-      if (this.props.options && this.props.options.onPipeUpdate) this.props.options.onPipeUpdate(::this.update);
+      if (this.props.options && this.props.options.onPipeUpdate)
+         this.props.options.onPipeUpdate(this.update.bind(this));
    }
 
    componentDidUpdate() {

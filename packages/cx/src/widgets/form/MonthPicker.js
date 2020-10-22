@@ -186,12 +186,12 @@ export class MonthPickerComponent extends VDOM.Component {
          end: widget.startYear + widget.bufferSize,
       };
 
-      this.handleMouseDown = ::this.handleMouseDown;
-      this.handleMouseUp = ::this.handleMouseUp;
-      this.handleMouseEnter = ::this.handleMouseEnter;
-      this.handleKeyPress = ::this.handleKeyPress;
-      this.handleTouchMove = ::this.handleTouchMove;
-      this.handleTouchEnd = ::this.handleTouchEnd;
+      this.handleMouseDown = this.handleMouseDown.bind(this);
+      this.handleMouseUp = this.handleMouseUp.bind(this);
+      this.handleMouseEnter = this.handleMouseEnter.bind(this);
+      this.handleKeyPress = this.handleKeyPress.bind(this);
+      this.handleTouchMove = this.handleTouchMove.bind(this);
+      this.handleTouchEnd = this.handleTouchEnd.bind(this);
    }
 
    extractCursorInfo(el) {
@@ -330,7 +330,7 @@ export class MonthPickerComponent extends VDOM.Component {
       this.setState({
          focused: true,
       });
-      if (this.props.onFocusOut) oneFocusOut(this, this.dom.el, ::this.handleFocusOut);
+      if (this.props.onFocusOut) oneFocusOut(this, this.dom.el, this.handleFocusOut.bind(this));
    }
 
    handleFocusOut() {
@@ -536,10 +536,10 @@ export class MonthPickerComponent extends VDOM.Component {
             onKeyDown={this.handleKeyPress}
             onMouseDown={stopPropagation}
             onMouseMove={(e) => tooltipMouseMove(e, ...getFieldTooltip(this.props.instance))}
-            onMouseLeave={::this.handleMouseLeave}
+            onMouseLeave={this.handleMouseLeave.bind(this)}
             onFocus={(e) => this.handleFocus(e)}
-            onBlur={::this.handleBlur}
-            onScroll={::this.onScroll}
+            onBlur={this.handleBlur.bind(this)}
+            onScroll={this.onScroll.bind(this)}
          >
             {this.state.yearHeight && <div style={{ height: `${(start - startYear) * this.state.yearHeight}px` }} />}
             <table

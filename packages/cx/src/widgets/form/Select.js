@@ -169,9 +169,9 @@ class SelectComponent extends VDOM.Component {
                disabled={data.disabled}
                tabIndex={data.tabIndex}
                {...data.inputAttrs}
-               onBlur={::this.onBlur}
+               onBlur={this.onBlur.bind(this)}
                onFocus={(e) => this.onFocus()}
-               onKeyDown={::this.onKeyDown}
+               onKeyDown={this.onKeyDown.bind(this)}
                onChange={(e) => {
                   e.preventDefault();
                   select(e.target.value);
