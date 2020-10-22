@@ -1,10 +1,11 @@
-import * as Cx from '../core'
+import * as Cx from "../core";
+import { Widget, WidgetConfig } from "./Widget";
 
-interface TextProps extends Cx.WidgetProps {
-   value?: Cx.StringProp,
-   bind?: string,
-   tpl?: string,
-   expr?: string,
+export interface TextConfig extends WidgetConfig {
+   value?: Cx.StringProp;
+   bind?: string;
+   tpl?: string;
+   expr?: string;
 }
 
-export class Text extends Cx.Widget<TextProps> { }
+export class Text extends Widget<TextConfig> {}
