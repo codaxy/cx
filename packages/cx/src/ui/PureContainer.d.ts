@@ -1,3 +1,5 @@
-import { Container } from "./Container";
+import { Container, ContainerConfig } from "./Container";
 
-export class PureContainer<T> extends Container<T> {}
+export interface PureContainerProps extends ContainerConfig {}
+
+export class PureContainer<T extends PureContainerProps> extends Container<T> {}

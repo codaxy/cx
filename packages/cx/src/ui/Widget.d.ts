@@ -31,7 +31,6 @@ export interface WidgetConfig {
    /** Widget supports class, className and style attributes. */
    styled?: boolean;
 }
-
 export class Widget<P extends WidgetConfig> extends Component {
    static create(type: any, config?: any, more?: any): any;
    static resetCounter(): void;

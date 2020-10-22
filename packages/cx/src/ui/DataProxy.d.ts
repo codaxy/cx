@@ -1,10 +1,12 @@
-import * as Cx from '../core';
+import * as Cx from "../core";
 
-interface DataProxyProps extends Cx.PureContainerProps {
-   data?: Cx.StructuredProp,
-   value?: Cx.Binding,
-   alias?: string,
-   cached?: boolean
+import { PureContainerProps, PureContainer } from "./PureContainer";
+
+interface DataProxyProps extends PureContainerProps {
+   data?: Cx.StructuredProp;
+   value?: Cx.Binding;
+   alias?: string;
+   cached?: boolean;
 }
 
-export class DataProxy extends Cx.Widget<DataProxyProps> {}
+export class DataProxy<T extends DataProxyProps> extends PureContainer<T> {}

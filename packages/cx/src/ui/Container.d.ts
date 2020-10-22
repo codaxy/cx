@@ -33,4 +33,7 @@ export class Container<T extends ContainerConfig> extends Widget<T> {
    find(filter: Filter, options?: Cx.Config): any[];
 
    findFirst(filter: Filter, options?: Cx.Config): any;
+
+   children?: Widget<any>[];
+   items?: Widget<any>[];
 }
